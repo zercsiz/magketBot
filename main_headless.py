@@ -19,7 +19,11 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")  # Enable headless mode
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.binary_location = os.getenv('CHROMIUM_PATH')  # Specify the path to the Chromium binary
+
+try:
+    chrome_options.binary_location = os.getenv('CHROMIUM_PATH')  # Specify the path to the Chromium binary
+except:
+    chrome_options.binary_location = "/usr/bin/chromium-browser"
 
 # Initialize WebDriver with headless mode and Chromium
 driver = webdriver.Chrome(options=chrome_options)
