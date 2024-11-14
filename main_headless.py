@@ -6,8 +6,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import sys
-import pytz
-import os
 
 
 # Set up your credentials and the URL
@@ -19,21 +17,10 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")  # Enable headless mode
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
-
-try:
-    chrome_options.binary_location = os.getenv('CHROMIUM_PATH')  # Specify the path to the Chromium binary
-except:
-    chrome_options.binary_location = "/usr/bin/chromium-browser"
+chrome_options.binary_location = "/usr/bin/chromium-browser"
 
 # Initialize WebDriver with headless mode and Chromium
 driver = webdriver.Chrome(options=chrome_options)
-
-# change the browsers clock by 3 hours, 2 to convert it to UTC + 2 and one to trick the website
-driver.execute_script("""
-    var currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 3);
-    window.dateOverride = currentDate;
-""")
 
 driver.get(URL)
 
@@ -51,10 +38,9 @@ login_button = driver.find_element(By.XPATH, '//button[@type="submit"]')  # Adju
 login_button.click()
 
 # Wait until 3:30 PM to start clicking
-timezone = pytz.timezone('Etc/GMT-2')
 target_time = "15:29"
 while True:
-    current_time = datetime.now(timezone).strftime("%H:%M")
+    current_time = datetime.now().strftime("%H:%M")
     if current_time >= target_time:
         break
     time.sleep(10)
@@ -69,7 +55,7 @@ while True:
         ) 
         button.click()
     except:
-        now = datetime.now(timezone)
+        now = datetime.now()
         if now.minute >= 35:
             break
         driver.refresh()
