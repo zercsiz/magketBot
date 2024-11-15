@@ -38,7 +38,7 @@ login_button = driver.find_element(By.XPATH, '//button[@type="submit"]')  # Adju
 login_button.click()
 
 # Wait until 3:30 PM to start clicking
-target_time = "15:29"
+target_time = "16:29"
 while True:
     current_time = datetime.now().strftime("%H:%M")
     if current_time >= target_time:
